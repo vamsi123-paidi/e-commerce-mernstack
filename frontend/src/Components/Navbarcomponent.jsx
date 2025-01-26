@@ -133,6 +133,7 @@ const Navbarcomponent = () => {
             aria-labelledby="offcanvasNavbarLabel"
             placement="end"
             className="bg-light text-dark"
+            style={{ width: '100%', maxWidth: '50%', height: '100vh' }}
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
