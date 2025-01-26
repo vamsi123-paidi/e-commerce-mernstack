@@ -67,7 +67,7 @@ const Navbarcomponent = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post('https://e-commerce-mernstack-bqpi.onrender.com/api/auth/login', {
         email,
         password,
       });
@@ -92,7 +92,7 @@ const Navbarcomponent = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post('https://e-commerce-mernstack-bqpi.onrender.com/api/auth/register', {
         email,
         password,
       });
