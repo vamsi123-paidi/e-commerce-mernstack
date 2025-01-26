@@ -38,7 +38,7 @@ const ProductsPage = ({ searchQuery }) => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/cart/add',
+        'https://e-commerce-mernstack-bqpi.onrender.com/api/cart/add',
         {
           userId: userId,
           productId: product.id,
