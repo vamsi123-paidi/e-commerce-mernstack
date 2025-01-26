@@ -8,7 +8,7 @@ const cartRoutes = require('./routes/cartRoutes');
 dotenv.config();
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://e-commerce-mernstack.vercel.app/',
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   credentials: true 
 }));
