@@ -1,17 +1,22 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db')
-const cors = require('cors')
+const cors = require('cors');
 const authRoutes = require('./routes/userRoute');
 const cartRoutes = require('./routes/cartRoutes');
 
 dotenv.config();
 const app = express();
-app.use(cors({
-  origin: 'https://e-commerce-mernstack.vercel.app/',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-  credentials: true 
-}));
+
+const corsOptions = {
+  origin: 'https://e-commerce-mernstack.vercel.app', // Ensure there's no trailing slash
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Add any additional headers your requests need
+  credentials: true // Enable credentials if needed
+};
+
+app.use(cors(corsOptions));
+
 
 // Middleware
 app.use(express.json());
