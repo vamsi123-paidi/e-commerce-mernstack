@@ -35,7 +35,6 @@ const Navbarcomponent = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Check login status on mount
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -59,30 +58,37 @@ const Navbarcomponent = () => {
   const handleShowRegister = () => setShowRegister(true);
   const handleCloseRegister = () => setShowRegister(false);
 
-  const handleLogin = async (e) => {
+ const handleLogin = async (e) => {
     e.preventDefault();
+
+    // Validate the email and password input
     if (!email || !password) {
-      alert('Email and password are required.');
-      return;
+        alert('Email and password are required.');
+        return;
     }
 
     try {
-      const response = await axios.post('https://e-commerce-mernstack-bqpi.onrender.com/api/auth/login', {
-        email,
-        password,
-      });
+        const response = await axios.post('https://e-commerce-mernstack-bqpi.onrender.com/api/auth/login', {
+            email,
+            password,
+        });
 
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        setIsLoggedIn(true);
-        setShowLogin(false);
-        navigate('/');
-      }
+        if (response.data.token && response.data.userId) {
+            // Store token and userId in localStorage
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userId', response.data.userId); // Save the userId
+
+            setIsLoggedIn(true);
+            setShowLogin(false);
+            navigate('/'); 
+        } else {
+            alert('Login failed: Missing token or userId');
+        }
     } catch (error) {
-      console.error('Login failed:', error);
-      alert('Login failed');
+        console.error('Login failed:', error);
+        alert('Login failed: ' + error.message);
     }
-  };
+};
 
   const handleRegister = async (e) => {
     e.preventDefault();
