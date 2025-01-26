@@ -33,7 +33,7 @@ const ProductsPage = ({ searchQuery }) => {
     }
 
     if (!userId) {
-      alert('User ID is missing! Please log in first.');
+      alert('User ID is missing! Please login .');
       return;
     }
 
