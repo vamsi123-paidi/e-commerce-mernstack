@@ -29,7 +29,7 @@ const CartPage = () => {
         }
 
         // Now make the request with the userId in the URL
-        const response = await axios.get(`http://localhost:5000/api/cart/${userId}`, {
+        const response = await axios.get(`https://e-commerce-mernstack-bqpi.onrender.com/api/cart/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -58,7 +58,7 @@ const CartPage = () => {
     const token = localStorage.getItem('token');
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/cart/${productId}`,
+        `https://e-commerce-mernstack-bqpi.onrender.com/api/cart/${productId}`,
         { quantity },
         {
           headers: {
@@ -85,7 +85,7 @@ const CartPage = () => {
   
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/cart/remove',
+        'https://e-commerce-mernstack-bqpi.onrender.com/api/cart/remove',
         { productId }, // Ensure this is being sent correctly
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -101,7 +101,7 @@ const CartPage = () => {
   const handleClearCart = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.delete('http://localhost:5000/api/cart', {
+      const response = await axios.delete('https://e-commerce-mernstack-bqpi.onrender.com/api/cart', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
