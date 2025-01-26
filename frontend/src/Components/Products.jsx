@@ -22,40 +22,43 @@ const ProductsPage = ({ searchQuery }) => {
     }
   }, [categories, dispatch, productsByCategory]);
 
-  const handleAddToCart = async (product) => {
+ const handleAddToCart = async (product) => {
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId'); // Assuming userId is stored in localStorage, adjust as needed
+    const userId = localStorage.getItem('userId'); // Ensure userId is in localStorage
 
+    // Check if token and userId are available
     if (!token) {
       alert('You must be logged in to add items to the cart');
       return;
     }
 
     if (!userId) {
-      alert('User ID is missing');
+      alert('User ID is missing! Please log in first.');
       return;
     }
 
     try {
+      // Send the add-to-cart request to the backend
       const response = await axios.post(
         'https://e-commerce-mernstack-bqpi.onrender.com/api/cart/add',
         {
           userId: userId,
           productId: product.id,
-          quantity: 1,
+          quantity: 1, // Or retrieve the quantity based on your use case
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Send token for authorization
           },
         }
       );
       console.log(response.data);
     } catch (error) {
       console.error('Error adding to cart:', error);
-      // Handle the error gracefully, such as showing a message to the user
+      // Handle the error gracefully (e.g., show error message to user)
+      alert('Failed to add item to cart');
     }
-  };
+};
 
   const sortProducts = (products) => {
     const sortedProducts = [...products];
