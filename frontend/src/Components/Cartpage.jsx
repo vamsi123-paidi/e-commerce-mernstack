@@ -12,38 +12,39 @@ const CartPage = () => {
     const fetchCart = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
-        setError('You must be logged in to view the cart');
+        setError('You must be logged in to view the cart.');
         setLoading(false);
         return;
       }
 
       try {
-        // Decode the token manually to get userId
-        const decoded = JSON.parse(atob(token.split('.')[1])); // Decode token manually to get userId
+        const decoded = JSON.parse(atob(token.split('.')[1]));
         const userId = decoded?.id;
 
         if (!userId) {
-          setError('Invalid token');
+          setError('Invalid token.');
           setLoading(false);
           return;
         }
 
-        // Now make the request with the userId in the URL
-        const response = await axios.get(`https://e-commerce-mernstack-bqpi.onrender.com/api/cart/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.get(
+          `https://e-commerce-mernstack-bqpi.onrender.com/api/cart/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
+        );
 
         if (response.data.cart) {
-          setCart(response.data.cart.items); // Adjust based on the response structure
+          setCart(response.data.cart.items);
         } else {
-          setError('Cart data is not available');
+          setError('Cart data is not available.');
         }
         setLoading(false);
       } catch (err) {
         console.error('Error fetching cart:', err);
-        setError('Error fetching cart');
+        setError('Error fetching cart.');
         setLoading(false);
       }
     };
@@ -53,7 +54,7 @@ const CartPage = () => {
 
   // Handle quantity change in the cart
   const handleQuantityChange = async (productId, quantity) => {
-    if (quantity < 1) return; // Don't allow quantity to be less than 1
+    if (quantity < 1) return;
 
     const token = localStorage.getItem('token');
     try {
@@ -66,10 +67,10 @@ const CartPage = () => {
           },
         }
       );
-      setCart(response.data.cart.items); // Assuming backend returns updated cart items
+      setCart(response.data.cart.items);
     } catch (error) {
       console.error('Error updating quantity:', error);
-      alert('Error updating product quantity');
+      alert('Error updating product quantity.');
     }
   };
 
@@ -77,42 +78,38 @@ const CartPage = () => {
   const handleRemove = async (productId) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      console.error('No token found');
+      console.error('No token found.');
       return;
     }
-  
-    console.log('Removing productId:', productId); // Check what is being passed
-  
+
     try {
       const response = await axios.post(
         'https://e-commerce-mernstack-bqpi.onrender.com/api/cart/remove',
-        { productId }, // Ensure this is being sent correctly
+        { productId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log('Item removed:', response.data);
-      setCart(response.data.items); // Update the cart state
+      setCart(response.data.items);
     } catch (error) {
       console.error('Error removing product:', error);
+      alert('Error removing product.');
     }
-  };  
-
+  };
 
   // Clear the entire cart
   const handleClearCart = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.delete('https://e-commerce-mernstack-bqpi.onrender.com/api/cart', {
+      await axios.delete('https://e-commerce-mernstack-bqpi.onrender.com/api/cart', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setCart([]); // Clear the cart state
+      setCart([]);
     } catch (error) {
       console.error('Error clearing cart:', error);
-      alert('Error clearing cart');
+      alert('Error clearing cart.');
     }
   };
-  
 
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 
@@ -128,7 +125,7 @@ const CartPage = () => {
         <>
           <div className="products-row">
             {cart.map((item) => (
-              <div key={item.id || item.productId} className="product-card"> {/* Unique key */}
+              <div key={item.id || item.productId} className="product-card">
                 <img src={item.thumbnail} alt={item.title} />
                 <h5>{item.title}</h5>
                 <p className="price">Price: ${item.price}</p>
@@ -142,18 +139,21 @@ const CartPage = () => {
                     type="number"
                     value={item.quantity}
                     min="1"
-                    onChange={(e) => handleQuantityChange(item.id, Number(e.target.value))}
-                    className="form-control w-27"
+                    onChange={(e) => handleQuantityChange(item.id || item.productId, Number(e.target.value))}
+                    className="form-control w-25"
                   />
                 </div>
-                <button className="btn btn-outline-danger mb-2" onClick={() => handleRemove(item.productId)}>
+                <button
+                  className="btn btn-outline-danger mb-2"
+                  onClick={() => handleRemove(item.id || item.productId)}
+                >
                   Remove
                 </button>
               </div>
             ))}
           </div>
           <div className="text-center mt-4">
-            <button className="btn btn-warning" onClick={handleClearCart}>
+            <button className="btn btn-warning mb-3" onClick={handleClearCart}>
               Clear Cart
             </button>
             <h4 className="totalprice">Total Price: ${totalPrice}</h4>
